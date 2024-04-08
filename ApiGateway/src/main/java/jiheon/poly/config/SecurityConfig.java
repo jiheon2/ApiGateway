@@ -45,7 +45,15 @@ public class SecurityConfig {
         http.securityContextRepository(NoOpServerSecurityContextRepository.getInstance());
 
         http.authorizeExchange(authz -> authz
-                .pathMatchers("/notice/**").hasAnyAuthority("ROLE_USER")
+                        .pathMatchers("/notice/**").hasAnyAuthority("ROLE_USER")
+                        .pathMatchers("/user/**").hasAnyAuthority("ROLE_USER")
+
+                        .pathMatchers("/login/**").permitAll()
+
+                        .pathMatchers("/reg/**").permitAll()
+
+//                        .anyExchange().authenticated() // 그외 나머지 url 요청은 인증된 사용자만 가능
+                        .anyExchange().permitAll() // 그 외 나머지 url 요청은 인증 받지 않아도 접속 가능함
         );
 
         // Spring Security 필터들이 실행되기 전에 JWT 필터 실행
